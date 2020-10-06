@@ -60,8 +60,8 @@ class RxPeripheralImpl: NSObject, RxPeripheral, CBPeripheralDelegate {
     
     public func read(service: CBUUID, characteristic: CBUUID) -> Single<Data?> {
         print("READ RxPeripheralImpl")
-        
         return connectionState
+         
             .flatMapLatest { (state: ConnectionState) -> Observable<([CBService], Error?)> in
                 guard case let .connected(peripheral) = state,
                     let cbPeripheral = peripheral as? CBPeripheral,
@@ -71,6 +71,12 @@ class RxPeripheralImpl: NSObject, RxPeripheral, CBPeripheralDelegate {
                 self.peripheral.discoverServices([service])
                 
                 return self.didDiscoverServicesSubject.asObservable()
+            }.filter { (services: [CBService], error: Error?) -> Bool in
+                if (services.count == 0){
+                    return false
+                } else {
+                    return true
+                }
             }
             .map { (services: [CBService], error: Error?) -> (CBService?, Error?) in
                 // check that given service exists on the peripheral
@@ -215,10 +221,8 @@ class RxPeripheralImpl: NSObject, RxPeripheral, CBPeripheralDelegate {
                     
                     return self.didDiscoverCharacteristicsSubject.asObservable()
                 }
-                .filter
-                {   print("FILTER for")
-                    print($0,$1)
-                    for c in $0{
+                .filter { (characteristics: [CBCharacteristic], error: Error?) -> Bool in
+                    for c in characteristics{
                         print(c.uuid.uuidString, characteristic.uuidString)
                         if(c.uuid.uuidString == characteristic.uuidString){
                             return true
@@ -309,6 +313,13 @@ class RxPeripheralImpl: NSObject, RxPeripheral, CBPeripheralDelegate {
     public func hasService(service: CBUUID) -> Observable<Bool> {
             return
                 didDiscoverServicesSubject
+                .filter { (services: [CBService], error: Error?) -> Bool in
+                    if (services.count == 0){
+                        return false
+                    } else {
+                        return true
+                    }
+                }
                 .map { (services: [CBService], error: Error?) -> (CBService?, Error?) in
                     print("RFN ",services.count, services)
                     print("RFN ",services.first?.uuid.uuidString, service.uuidString)
