@@ -13,7 +13,7 @@ let package = Package(
         .library(name: "RxCBCentral", targets: ["RxCBCentral"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/ReactiveX/RxSwift.git", .upToNextMajor(from: "5.0.0")),
+        .package(url: "https://github.com/ReactiveX/RxSwift.git", .upToNextMajor(from: "5.1.1")),
         .package(url: "https://github.com/RxSwiftCommunity/RxOptional", .upToNextMajor(from: "4.1.0"))
     ],
     targets: [
