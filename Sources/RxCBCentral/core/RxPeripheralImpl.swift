@@ -450,6 +450,10 @@ class RxPeripheralImpl: NSObject, RxPeripheral, CBPeripheralDelegate {
             })
     }
     
+    func getPeripheralType() -> CBPeripheralType {
+        return self.peripheral
+    }
+    
     
     // MARK: - CBPeripheralDelegate
     

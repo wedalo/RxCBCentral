@@ -84,7 +84,14 @@ public protocol RxPeripheral: AnyObject {
     /// Validate if service exist
     func hasService(service: CBUUID) -> Observable<Bool>
     
+    /// Execute GATT setIndicateDescriptor for the given service and characteristic
+    /// - parameter service: the CoreBluetooth UUID of the GATT Service containing the desired Characteristic.
+    /// - parameter characteristic: the CoreBluetooth UUID of the GATT Characteristic to receive updates about.
+    /// - parameter preprocessor: a data aggregator that can perform demarcation. Will process the notification data
     func setIndicateDescriptor(service: CBUUID, characteristic: CBUUID, preprocessor: Preprocessor?) -> Observable<Bool>
+    
+    /// Wrap CBPeripheral following CBPeripheralType protocol to get important data peripheral identifier UUID
+    func getPeripheralType() -> CBPeripheralType
     
 }
 
