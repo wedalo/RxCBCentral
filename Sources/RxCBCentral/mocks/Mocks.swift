@@ -576,6 +576,12 @@ public class RxPeripheralMock: RxPeripheral {
     public func setIndicateDescriptor(service: CBUUID, characteristic: CBUUID, preprocessor: Preprocessor? = nil) -> Observable<Bool>{
         return Observable.just(true)
     }
+    
+    public func getPeripheralType() -> CBPeripheralType {
+        let identifier2 = UUID(uuidString: "E621E1F8-C36C-495A-93FC-0C247A3E6E5A")!
+        let peripheralMock = CBPeripheralTypeMock(identifier: identifier2, state: .disconnected)
+        return peripheralMock
+    }
 }
 
 class CBCentralManagerTypeMock: CBCentralManagerType {
